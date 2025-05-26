@@ -33,7 +33,7 @@ function Navbar() {
 
     const handleSellButton = () => {
         if (!currentUser) {
-            toast.warn('⚠️ You need to log in to start selling.', { position: 'top-center', autoClose: 3000, theme: 'dark' });
+            toast.warn('You need to log in to start selling.', { position: 'top-center', autoClose: 3000, theme: 'dark' });
             return;
         } else {
             setLoading(true);
