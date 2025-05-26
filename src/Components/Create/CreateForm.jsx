@@ -99,8 +99,8 @@ const CreateForm = () => {
       try {
          setLoading(true);
          const {uid} = currentUser;
-         console.log('currentUser uid :', uid);
-
+         // console.log('currentUser uid :', uid);
+         // storing the product images to product-images/user'sId path or folder.
          const storageRef = ref(storage, `product-images/${uid}/${image.name}_${Date.now()}`);
          // const storageRef = ref(storage, `product-images/${image.name}_${Date.now()}`);
          const uploadTask = uploadBytesResumable(storageRef, image);
