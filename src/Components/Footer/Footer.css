@@ -1,0 +1,96 @@
+.footerParentDiv {
+  width: 100%;
+  background: #f8f9fa;
+  font-family: Arial, sans-serif;
+}
+
+.footerParentDiv .content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 32px;
+  padding: 32px;
+  background: #f1f3f5;
+}
+
+.footerParentDiv .content > div {
+  min-width: 150px;
+}
+
+.footerParentDiv .content .heading p {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.footerParentDiv .content .list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerParentDiv .content .list ul li {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.footerParentDiv .content .list ul li:hover {
+  color: #007bff;
+}
+
+
+.footerParentDiv .followUs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  min-width: 180px;
+}
+
+.footerParentDiv .followUs .heading p {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+}
+
+.footerParentDiv .followUs .socialIcons {
+  display: flex;
+  gap: 12px;
+}
+
+.footerParentDiv .followUs .socialIcons a {
+  font-size: 20px;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+.footerParentDiv .followUs .socialIcons a:hover {
+  color: #007bff;
+}
+
+.footerParentDiv .followUs .appButtons a img {
+  height: 40px;
+  width: 110px;
+  margin-bottom: 2px;
+}
+
+
+
+.footerParentDiv .footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 16px;
+  background: #0550a5;
+  color: #fff;
+  font-size: 13px;
+}
+
+.footerParentDiv .footer p {
+  margin: 4px 0;
+}

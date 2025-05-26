@@ -1,0 +1,102 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* full viewport height */
+    padding: 40px 0; /* adds space at top and bottom */
+    background: #f8f8f8; /* optional background */
+}
+
+.signupParentDiv {
+    width: 280px;
+    padding: 25px;
+    background-color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.signupParentDiv img {
+    margin-bottom: 5px;
+}
+
+.signupParentDiv label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    display: block;
+    text-align: left;
+    margin: 8px 0 3px;
+}
+
+.signupParentDiv .input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.signupParentDiv .input:focus {
+    border-color: #002f34;
+    box-shadow: 0 0 3px #002f34;
+}
+
+.signupParentDiv button {
+    width: 100%;
+    height: 42px;
+    background-color: #002f34;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s, border 0.3s;
+}
+
+.signupParentDiv button:hover {
+    background-color: #0550a5;
+    color: white;
+    border: 2px solid #0550a5;
+}
+
+.signupParentDiv a {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #0550a5;
+    text-decoration: none;
+    transition: color 0.3s;
+    display: inline; /* ensures link stays inline */
+    margin: 5px;
+}
+
+.signupParentDiv a:hover {
+    color: red;
+    text-decoration: underline;
+}
+
+
+.login-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.home-link {
+    margin-top: 20px;
+}
+
+.home-link a {
+    color: blue;
+    font-weight: 600;
+    font-size: 15px;
+}

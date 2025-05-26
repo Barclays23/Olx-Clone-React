@@ -1,0 +1,208 @@
+.container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 15px;
+    min-height: calc(100vh - 120px); /* Adjust for navbar and footer */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.createParentDiv {
+    width: 100%;
+    max-width: 450px;
+    padding: 30px;
+    background-color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    margin: 100px auto 20px; /* Increased top margin */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.createParentDiv .logo {
+    border: none;
+    max-width: 150px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.createParentDiv label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px;
+}
+
+.createParentDiv .input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.createParentDiv .input:focus {
+    border-color: #002f34;
+    box-shadow: 0 0 3px #002f34;
+}
+
+.createParentDiv .imagePreview {
+    margin: 20px 0;
+}
+
+.createParentDiv .imagePreview img {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.createParentDiv input[type="file"] {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+}
+
+.input-error {
+    color: red;
+    font-size: 0.9rem;
+    margin: 5px 0 0 0;
+    text-align: left;
+}
+
+.uploadBtn {
+    position: relative;
+    width: 100%;
+    height: 48px;
+    background-color: #002f34;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    margin-top: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    overflow: hidden;
+    transition: background-color 0.3s, color 0.3s, border 0.3s;
+}
+
+.uploadBtn:hover {
+    background-color: #0550a5;
+    color: white;
+}
+
+.upload-progress-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: #00a531;
+    transition: width 0.3s ease;
+    z-index: 1;
+}
+
+.upload-progress-text {
+    position: relative;
+    z-index: 2;
+    color: white;
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 768px) {
+    .createParentDiv {
+        padding: 20px;
+        margin: 105px auto 20px; /* Increased top margin for tablet */
+        max-width: 500px;
+    }
+
+    .createParentDiv .logo {
+        max-width: 120px;
+        margin-bottom: 15px;
+    }
+
+    .createParentDiv label {
+        font-size: 14px;
+    }
+
+    .createParentDiv .input {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .createParentDiv input[type="file"] {
+        font-size: 14px;
+    }
+
+    .createParentDiv .imagePreview {
+        margin: 15px 0;
+    }
+
+    .uploadBtn {
+        height: 44px;
+        font-size: 14px;
+        margin-top: 20px;
+    }
+
+    .input-error {
+        font-size: 0.85rem;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    .createParentDiv {
+        padding: 15px;
+        margin: 95px auto 15px; /* Increased top margin for mobile */
+        max-width: 100%;
+    }
+
+    .createParentDiv .logo {
+        max-width: 100px;
+        margin-bottom: 10px;
+    }
+
+    .createParentDiv label {
+        font-size: 13px;
+        margin: 8px 0 4px;
+    }
+
+    .createParentDiv .input {
+        padding: 7px;
+        font-size: 13px;
+    }
+
+    .createParentDiv input[type="file"] {
+        font-size: 13px;
+        padding: 8px 0;
+    }
+
+    .createParentDiv .imagePreview {
+        margin: 10px 0;
+    }
+
+    .createParentDiv .imagePreview img {
+        max-width: 80%;
+    }
+
+    .uploadBtn {
+        height: 40px;
+        font-size: 13px;
+        margin-top: 15px;
+    }
+
+    .input-error {
+        font-size: 0.8rem;
+    }
+}

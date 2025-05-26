@@ -1,0 +1,43 @@
+.bannerParentDiv {
+  margin-top: 15px;
+  padding-top: 4em;
+}
+
+.bannerChildDiv {
+  width: 100%;
+}
+
+.menuBar {
+  display: flex;
+  padding: 10px 16px;
+  flex-wrap: wrap; /* makes it wrap on small screens */
+}
+
+.categoryMenu span {
+  margin-right: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.otherQuickOptions span {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.banner {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.banner img {
+  width: 100%;
+  height: auto; /* keeps aspect ratio */
+  display: block; /* removes inline spacing */
+}
+
+@media only screen and (max-width: 700px) {
+  .otherQuickOptions {
+    display: none;
+  }
+}
