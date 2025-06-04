@@ -1,37 +1,32 @@
-import React, { Fragment, useContext, useEffect, useState, useRef } from 'react';
-import './CreateForm.css';
-import Navbar from '../Navbar/Navbar';
-import Footer from '../Footer/Footer';
-import { db, storage } from '../../services/firebase';
-import { AuthContext } from '../../contexts/AuthContext';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { addDoc, collection, Timestamp } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import './EditAdModal.css';
 import { toast } from 'react-toastify';
-import LoadingSpinner1 from '../LoadingSpinner/LoadingSpinner1/LoadingSpinner1';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { storage, db } from '../../services/firebase';
+import { doc, updateDoc, Timestamp } from 'firebase/firestore';
 import { Loader } from '@googlemaps/js-api-loader';
 
-const CreateForm = () => {
-   const [category, setCategory] = useState('Select Category');
-   const [product, setProduct] = useState('');
-   const [price, setPrice] = useState('');
+function EditAdModal({ product, onClose, onSubmit }) {
+   const [category, setCategory] = useState(product.category);
+   const [productName, setProductName] = useState(product.productName);
+   const [price, setPrice] = useState(product.price.toString());
    const [image, setImage] = useState(null);
-   const [imagePreview, setImagePreview] = useState('');
-   const [location, setLocation] = useState(null);
+   const [imagePreview, setImagePreview] = useState(product.imageUrl);
+   const [location, setLocation] = useState(product.location || null);
    const [locationError, setLocationError] = useState('');
    const [showMap, setShowMap] = useState(false);
    const [mapsLoaded, setMapsLoaded] = useState(false);
+   const [mapsLoadError, setMapsLoadError] = useState(null);
    const [uploadProgress, setUploadProgress] = useState(0);
    const [smoothProgress, setSmoothProgress] = useState(0);
    const [loading, setLoading] = useState(false);
-   const [spinLoading, setSpinLoading] = useState(false);
    const [categoryError, setCategoryError] = useState('');
    const [productError, setProductError] = useState('');
    const [priceError, setPriceError] = useState('');
    const [imageError, setImageError] = useState('');
-   const { currentUser, loading: authLoading } = useContext(AuthContext);
-   const navigate = useNavigate();
-
+   const modalRef = useRef(null);
+   const mapModalRef = useRef(null);
+   const fileInputRef = useRef(null);
    const mapRef = useRef(null);
    const markerRef = useRef(null);
    const googleMapsRef = useRef(null);
@@ -50,11 +45,14 @@ const CreateForm = () => {
             const google = await loader.load();
             googleMapsRef.current = google;
             setMapsLoaded(true);
+            setMapsLoadError(null);
          } catch (error) {
             console.error("Error loading Google Maps:", error);
+            setMapsLoadError('Failed to load Google Maps. Please check your API key or network connection.');
             toast.error('Failed to load Google Maps. Please check your API key or network.', {
                position: 'top-center',
                theme: 'colored',
+               autoClose: 5000,
             });
          }
       };
@@ -63,6 +61,7 @@ const CreateForm = () => {
          loadGoogleMaps();
       } else {
          setMapsLoaded(true);
+         setMapsLoadError(null);
       }
    }, []);
 
@@ -73,6 +72,10 @@ const CreateForm = () => {
          const previewUrl = URL.createObjectURL(file);
          setImagePreview(previewUrl);
       }
+   };
+
+   const handleFileButtonClick = () => {
+      fileInputRef.current.click();
    };
 
    const animateProgress = (target) => {
@@ -97,9 +100,11 @@ const CreateForm = () => {
 
    const initMap = async () => {
       if (!mapsLoaded || !googleMapsRef.current) {
-         toast.error('Google Maps failed to load. Please try again later.', {
+         setMapsLoadError('Google Maps is not loaded yet. Please try again later.');
+         toast.error('Google Maps is not loaded yet. Please try again later.', {
             position: 'top-center',
             theme: 'colored',
+            autoClose: 5000,
          });
          return;
       }
@@ -107,6 +112,12 @@ const CreateForm = () => {
       const mapContainer = document.getElementById('map');
       if (!mapContainer) {
          console.error('Map container not found');
+         setMapsLoadError('Map container not found. Please try again.');
+         toast.error('Map container not found. Please try again.', {
+            position: 'top-center',
+            theme: 'colored',
+            autoClose: 5000,
+         });
          return;
       }
 
@@ -114,65 +125,91 @@ const CreateForm = () => {
          return;
       }
 
-      const { Map } = await googleMapsRef.current.maps.importLibrary("maps");
-      const { AdvancedMarkerElement } = await googleMapsRef.current.maps.importLibrary("marker");
-      const { Geocoder } = googleMapsRef.current.maps;
+      try {
+         const { Map } = await googleMapsRef.current.maps.importLibrary("maps");
+         const { AdvancedMarkerElement } = await googleMapsRef.current.maps.importLibrary("marker");
+         const { Geocoder } = googleMapsRef.current.maps;
 
-      const map = new Map(mapContainer, {
-         center: { lat: 20.5937, lng: 78.9629 },
-         zoom: 5,
-         mapId: import.meta.env.VITE_GOOGLE_MAP_ID,
-      });
-
-      mapRef.current = map;
-
-      map.addListener('click', async (e) => {
-         const lat = e.latLng.lat();
-         const lng = e.latLng.lng();
-
-         if (markerRef.current) {
-            markerRef.current.map = null;
-         }
-
-         const markerElement = document.createElement('div');
-         markerElement.style.width = '32px';
-         markerElement.style.height = '32px';
-         markerElement.style.backgroundImage = 'url("https://maps.google.com/mapfiles/kml/paddle/red-circle.png")';
-         markerElement.style.backgroundSize = 'cover';
-
-         const marker = new AdvancedMarkerElement({
-            position: { lat, lng },
-            map: map,
-            content: markerElement,
+         const map = new Map(mapContainer, {
+            center: location ? { lat: location.latitude, lng: location.longitude } : { lat: 20.5937, lng: 78.9629 },
+            zoom: location ? 15 : 5,
+            mapId: import.meta.env.VITE_GOOGLE_MAP_ID,
          });
 
-         markerRef.current = marker;
+         mapRef.current = map;
 
-         const geocoder = new Geocoder();
-         try {
-            const response = await geocoder.geocode({ location: { lat, lng } });
-            if (response.results[0]) {
-               const address = response.results[0].formatted_address;
-               setLocation({ lat, lng, address });
-            } else {
-               setLocation({ lat, lng, address: 'Unknown location' });
-            }
-         } catch (error) {
-            console.error('Geocoding failed:', error);
-            setLocation({ lat, lng, address: 'Unknown location' });
+         // If there's an existing location, set a marker
+         if (location) {
+            const markerElement = document.createElement('div');
+            markerElement.style.width = '32px';
+            markerElement.style.height = '32px';
+            markerElement.style.backgroundImage = 'url("https://maps.google.com/mapfiles/kml/paddle/red-circle.png")';
+            markerElement.style.backgroundSize = 'cover';
+
+            const marker = new AdvancedMarkerElement({
+               position: { lat: location.latitude, lng: location.longitude },
+               map: map,
+               content: markerElement,
+            });
+
+            markerRef.current = marker;
          }
-      });
+
+         map.addListener('click', async (e) => {
+            const lat = e.latLng.lat();
+            const lng = e.latLng.lng();
+
+            if (markerRef.current) {
+               markerRef.current.map = null;
+            }
+
+            const markerElement = document.createElement('div');
+            markerElement.style.width = '32px';
+            markerElement.style.height = '32px';
+            markerElement.style.backgroundImage = 'url("https://maps.google.com/mapfiles/kml/paddle/red-circle.png")';
+            markerElement.style.backgroundSize = 'cover';
+
+            const marker = new AdvancedMarkerElement({
+               position: { lat, lng },
+               map: map,
+               content: markerElement,
+            });
+
+            markerRef.current = marker;
+
+            const geocoder = new Geocoder();
+            try {
+               const response = await geocoder.geocode({ location: { lat, lng } });
+               if (response.results[0]) {
+                  const address = response.results[0].formatted_address;
+                  setLocation({ lat, lng, address });
+               } else {
+                  setLocation({ lat, lng, address: 'Unknown location' });
+               }
+            } catch (error) {
+               console.error('Geocoding failed:', error);
+               setLocation({ lat, lng, address: 'Unknown location' });
+               toast.error('Failed to retrieve location details. Using coordinates only.', {
+                  position: 'top-center',
+                  theme: 'colored',
+                  autoClose: 5000,
+               });
+            }
+         });
+      } catch (error) {
+         console.error('Error initializing map:', error);
+         setMapsLoadError('Failed to initialize map. Please try again.');
+         toast.error('Failed to initialize map. Please try again.', {
+            position: 'top-center',
+            theme: 'colored',
+            autoClose: 5000,
+         });
+      }
    };
 
    const handleShowMap = () => {
-      if (!mapsLoaded) {
-         toast.error('Google Maps is not loaded yet. Please wait or check your API key.', {
-            position: 'top-center',
-            theme: 'colored',
-         });
-         return;
-      }
       setShowMap(true);
+      setMapsLoadError(null); // Reset error state when opening map
       setTimeout(() => {
          initMap();
       }, 100);
@@ -180,6 +217,7 @@ const CreateForm = () => {
 
    const handleCloseMap = () => {
       setShowMap(false);
+      setMapsLoadError(null); // Clear error when closing map
       if (mapRef.current) {
          mapRef.current = null;
       }
@@ -192,7 +230,6 @@ const CreateForm = () => {
    const handleSubmit = async (e) => {
       e.preventDefault();
       if (loading) return;
-      setLoading(true);
 
       let hasInputError = false;
       setCategoryError('');
@@ -202,45 +239,45 @@ const CreateForm = () => {
       setLocationError('');
 
       if (category === 'Select Category') {
-         setCategoryError("Please choose a category");
+         setCategoryError('Please choose a category');
          hasInputError = true;
       }
 
-      if (!product.trim()) {
+      if (!productName.trim()) {
          setProductError("Product name is required");
          hasInputError = true;
-      } else if (product.trim().length > 25) {
+      } else if (productName.trim().length > 25) {
          setProductError("Product name should not exceed 25 characters");
          hasInputError = true;
-      } else if (!/^[a-zA-Z0-9][a-zA-Z0-9\s\-&.",']*$/.test(product.trim())) {
+      } else if (!/^[a-zA-Z0-9][a-zA-Z0-9\s\-&.",']*$/.test(productName.trim())) {
          setProductError("Product name must start with a letter or number and contain only allowed characters.");
          hasInputError = true;
-      } else if (!/^[a-zA-Z0-9\s\-&.",']+$/.test(product.trim())) {
+      } else if (!/^[a-zA-Z0-9\s\-&.",']+$/.test(productName.trim())) {
          setProductError("Product name can only contain letters, numbers, spaces, and selected symbols (-, &, ., ,, ').");
          hasInputError = true;
-      } else if (!/[a-zA-Z]/.test(product.trim())) {
+      } else if (!/[a-zA-Z]/.test(productName.trim())) {
          setProductError("Product name must include at least one letter.");
          hasInputError = true;
-      } else if (product.trim().length < 5) {
+      } else if (productName.trim().length < 5) {
          setProductError("Product name must be at least 5 characters long");
          hasInputError = true;
       }
 
       const priceNumber = Number(price);
       if (!price.trim()) {
-         setPriceError("Price is required");
+         setPriceError('Price is required');
          hasInputError = true;
       } else if (isNaN(priceNumber) || priceNumber <= 0) {
-         setPriceError("Price should be a valid positive number");
+         setPriceError('Price should be a valid positive number');
          hasInputError = true;
       }
 
       const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
-      if (!image) {
-         setImageError("Please select an image first");
+      if (!image && !imagePreview) {
+         setImageError('Please select an image');
          hasInputError = true;
       } else if (image && !allowedTypes.includes(image.type)) {
-         setImageError("Please upload a valid image file (jpg, png, webp)");
+         setImageError('Please upload a valid image file (jpg, png, webp)');
          hasInputError = true;
       }
 
@@ -255,64 +292,70 @@ const CreateForm = () => {
       }
 
       try {
-         const { uid } = currentUser;
-         const storageRef = ref(storage, `product-images/${uid}/${image.name}_${Date.now()}`);
-         const uploadTask = uploadBytesResumable(storageRef, image);
+         setLoading(true);
+         let imageUrl = imagePreview;
 
-         uploadTask.on(
-            'state_changed',
-            (snapshot) => {
-               const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-               setUploadProgress(progress);
-               animateProgress(progress);
-            },
-            (error) => {
-               console.error("Upload failed:", error.code);
-               const errorMessage = getErrorMessage(error.code);
-               toast.error(`Image upload failed: ${errorMessage}`, { position: "top-center", theme: "colored" });
-               setLoading(false);
-            },
-            async () => {
-               const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-               await addDoc(collection(db, "products"), {
-                  category: category,
-                  productName: product,
-                  price: Number(price),
-                  imageUrl: downloadURL,
-                  location: {
-                     latitude: location.lat,
-                     longitude: location.lng,
-                     address: location.address,
+         if (image) {
+            const storageRef = ref(storage, `product-images/${product.userId}/${image.name}_${Date.now()}`);
+            const uploadTask = uploadBytesResumable(storageRef, image);
+
+            await new Promise((resolve, reject) => {
+               uploadTask.on(
+                  'state_changed',
+                  (snapshot) => {
+                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                     setUploadProgress(progress);
+                     animateProgress(progress);
                   },
-                  createdAt: Timestamp.now(),
-                  userId: currentUser.uid,
-               });
+                  (error) => {
+                     reject(error);
+                  },
+                  async () => {
+                     imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+                     resolve();
+                  }
+               );
+            });
+         }
 
-               await animateProgress(100);
-               toast.success('Product uploaded successfully!', { position: "top-center", theme: "dark", autoClose: 3000 });
+         const timestamp = Timestamp.now();
+         const updatedProduct = {
+            id: product.id,
+            category,
+            productName,
+            price: priceNumber,
+            imageUrl,
+            location: {
+               latitude: location.lat,
+               longitude: location.lng,
+               address: location.address,
+            },
+            createdAt: timestamp.toDate().toISOString(),
+            userId: product.userId,
+         };
 
-               setTimeout(() => {
-                  setCategory('Select Category');
-                  setProduct('');
-                  setPrice('');
-                  setImage(null);
-                  setImagePreview('');
-                  setLocation(null);
-                  setUploadProgress(0);
-                  setSmoothProgress(0);
-                  setLoading(false);
-                  setSpinLoading(true);
-               }, 500);
+         await updateDoc(doc(db, 'products', product.id), {
+            category,
+            productName,
+            price: priceNumber,
+            imageUrl,
+            location: {
+               latitude: location.lat,
+               longitude: location.lng,
+               address: location.address,
+            },
+            createdAt: timestamp,
+         });
+         await animateProgress(100);
+         toast.success('Ad updated successfully!', { position: 'top-center', theme: 'dark', autoClose: 3000 });
 
-               setTimeout(() => {
-                  setSpinLoading(false);
-               }, 1500);
-            }
-         );
+         setLoading(false);
+         onSubmit(updatedProduct);
+         onClose();
       } catch (error) {
-         console.error("Error saving product:", error.code);
+         console.error('Error updating product:', error.code);
          const errorMessage = getErrorMessage(error.code);
-         toast.error(`Failed to add product: ${errorMessage}`, { position: "top-center", theme: "colored" });
+         toast.error(`Failed to update ad: ${errorMessage}`, { position: 'top-center', theme: 'colored' });
          setLoading(false);
       }
    };
@@ -323,37 +366,38 @@ const CreateForm = () => {
          'storage/unauthorized': 'You do not have permission to upload files.',
          'storage/canceled': 'Upload was canceled.',
          'storage/unknown': 'An unknown storage error occurred.',
-         'storage/retry-limit-exceeded': 'Retry limit exceeded. Please try again.',
-         'storage/quota-exceeded': 'Storage quota exceeded. Contact support.',
-         'storage/invalid-argument': 'Invalid upload argument.',
-         'storage/invalid-checksum': 'File checksum does not match. Please re-upload.',
-         'storage/not-found': 'Storage object not found.',
-         'storage/server-file-wrong-size': 'File size mismatch on server.',
          'permission-denied': 'You do not have permission for this operation.',
          'unavailable': 'Firestore service is temporarily unavailable.',
-         'cancelled': 'Operation cancelled.',
-         'resource-exhausted': 'Quota exhausted, try later.',
       };
       return errorMap[errorCode] || 'An unexpected error occurred. Please try again.';
    };
 
    useEffect(() => {
+      const handleOutsideClick = (e) => {
+         if (showMap && mapModalRef.current && mapModalRef.current.contains(e.target)) {
+            return; // Don't close if clicking inside map modal
+         }
+         if (modalRef.current && !modalRef.current.contains(e.target)) {
+            onClose();
+         }
+      };
+
+      document.addEventListener('mousedown', handleOutsideClick);
       return () => {
-         if (imagePreview) {
+         document.removeEventListener('mousedown', handleOutsideClick);
+         if (imagePreview && image) {
             URL.revokeObjectURL(imagePreview);
          }
       };
-   }, [imagePreview]);
-
-   if (spinLoading) {
-      return <LoadingSpinner1 />;
-   }
+   }, [imagePreview, image, onClose, showMap]);
 
    return (
-      <Fragment>
-         <Navbar />
-         <div className="container">
-            <div className="createParentDiv">
+      <div className="modal-overlay">
+         <div className="modal-container">
+            <div className="createParentDiv" ref={modalRef}>
+               <button className="close-button" onClick={onClose} aria-label="Close modal">
+                  ×
+               </button>
                <img
                   className="logo"
                   src="../../../Images/olx-logo.png"
@@ -368,7 +412,8 @@ const CreateForm = () => {
                      value={category}
                      className="input"
                      id="category"
-                     name="category">
+                     name="category"
+                  >
                      <option value="Select Category">Select Category</option>
                      <option value="Accessories">Accessories</option>
                      <option value="Agriculture">Agriculture</option>
@@ -395,13 +440,13 @@ const CreateForm = () => {
 
                   <label htmlFor="fname">Product Name</label>
                   <input
-                     onChange={(e) => setProduct(e.target.value)}
+                     onChange={(e) => setProductName(e.target.value)}
                      className="input"
                      type="text"
                      id="fname"
                      name="Name"
                      placeholder="HP Elite Book Laptop, Apple iPhone 16 ...."
-                     value={product}
+                     value={productName}
                   />
                   {productError && <p className="input-error">{productError}</p>}
 
@@ -416,31 +461,35 @@ const CreateForm = () => {
                   />
                   {priceError && <p className="input-error">{priceError}</p>}
 
-
-                  <div className="imagePreview">
-                     {imagePreview && (
-                        <img
-                           alt="Preview"
-                           width="200px"
-                           height="auto"
-                           src={imagePreview}
+                  <div className="imageRow">
+                     <div className="imagePreview">
+                        {imagePreview && (
+                           <img
+                              alt="Preview"
+                              width="150px"
+                              height="auto"
+                              src={imagePreview}
+                           />
+                        )}
+                     </div>
+                     <div className="imageUploadContainer">
+                        <input
+                           type="file"
+                           ref={fileInputRef}
+                           onChange={handleImageChange}
+                           style={{ display: 'none' }}
+                           accept="image/jpeg,image/png,image/jpg,image/webp"
                         />
-                     )}
+                        <button
+                           type="button"
+                           className="imageUploadBtn"
+                           onClick={handleFileButtonClick}
+                        >
+                           {imagePreview ? 'Change Image' : 'Choose File'}
+                        </button>
+                        {imageError && <p className="input-error">{imageError}</p>}
+                     </div>
                   </div>
-                  <div className="image-upload-container">
-                     <input
-                        type="file"
-                        id="image-upload"
-                        onChange={handleImageChange}
-                        accept="image/jpeg,image/png,image/jpg,image/webp"
-                        style={{ display: 'none' }}
-                     />
-                     <label htmlFor="image-upload" className="image-upload-btn">
-                        {imagePreview ? 'Change Image' : 'Upload Image'}
-                     </label>
-                  </div>
-                  {imageError && <p className="input-error">{imageError}</p>}
-
 
                   <label>Location</label>
                   <div className="location-field">
@@ -456,7 +505,7 @@ const CreateForm = () => {
                      </button>
                   </div>
                   {locationError && <p className="input-error">{locationError}</p>}
-
+                  {mapsLoadError && <p className="input-error">{mapsLoadError}</p>}
 
                   <button className="uploadBtn" type="submit" disabled={loading}>
                      {loading ? (
@@ -466,11 +515,11 @@ const CreateForm = () => {
                               style={{ width: `${Math.round(smoothProgress)}%` }}
                            ></div>
                            <span className="upload-progress-text">
-                              Uploading... {Math.round(smoothProgress)}%
+                              Updating... {Math.round(smoothProgress)}%
                            </span>
                         </>
                      ) : (
-                        "Upload and Submit"
+                        'Update Ad'
                      )}
                   </button>
                </form>
@@ -478,13 +527,17 @@ const CreateForm = () => {
          </div>
 
          {showMap && (
-            <div className="map-modal">
+            <div className="map-modal" ref={mapModalRef}>
                <div className="map-modal-content">
                   <button className="map-modal-close" onClick={handleCloseMap}>
                      ×
                   </button>
                   <h3>Select Location</h3>
-                  <div id="map" className="map-container"></div>
+                  {mapsLoadError ? (
+                     <p className="map-error">{mapsLoadError}</p>
+                  ) : (
+                     <div id="map" className="map-container"></div>
+                  )}
                   {location && (
                      <div className="location-info">
                         <p><strong>Selected Location:</strong> {location.address}</p>
@@ -498,10 +551,8 @@ const CreateForm = () => {
                </div>
             </div>
          )}
-
-         <Footer />
-      </Fragment>
+      </div>
    );
-};
+}
 
-export default CreateForm;
+export default EditAdModal;

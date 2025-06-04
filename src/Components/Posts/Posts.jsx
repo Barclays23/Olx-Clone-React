@@ -1,86 +1,87 @@
 import React, { useContext, useEffect, useState } from 'react';
-
-import Heart from '../../assets/Heart';
-import './Post.css';
-import { collection, getDocs } from 'firebase/firestore';
+import './Posts.css';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../services/firebase';
 import { PostContext } from '../../contexts/PostContext';
+import { AuthContext } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-
-
-
+import PostCard from '../PostCard/PostCard';
 
 function Posts() {
    const [products, setProducts] = useState([]);
-
-   const {setPostDetails} = useContext(PostContext);
-   const navigate = useNavigate(); 
+   const [wishlist, setWishlist] = useState([]);
+   const { setPostDetails } = useContext(PostContext);
+   const { currentUser } = useContext(AuthContext);
+   const navigate = useNavigate();
 
    useEffect(() => {
       const fetchProducts = async () => {
          try {
-            const querySnapshot = await getDocs(collection(db, "products"));
-            
-            const allProducts = [];
-
-            querySnapshot.forEach((doc) => {
-               allProducts.push({ 
+            const querySnapshot = await getDocs(collection(db, 'products'));
+            const allProducts = querySnapshot.docs.map((doc) => {
+               const data = doc.data();
+               return {
                   id: doc.id,
-                  // ...doc.data()
-                  category: doc.data().category,
-                  productName: doc.data().productName,
-                  price: doc.data().price,
-                  imageUrl: doc.data().imageUrl,
-                  createdAt: doc.data().createdAt.toDate().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
-                  userId: doc.data().userId,
-               });
+                  ...data, // Spread all document data
+                  createdAt: data.createdAt.toDate().toLocaleDateString('en-IN', {
+                     day: '2-digit',
+                     month: 'short',
+                     year: 'numeric',
+                  }),
+               };
             });
             setProducts(allProducts);
             
          } catch (error) {
-            console.error("Error fetching posts:", error);
+            console.error('Error fetching posts:', error);
+         }
+      };
+
+      const fetchWishlist = async () => {
+         if (!currentUser) {
+            setWishlist([]);
+            return;
+         }
+         try {
+            const q = query(collection(db, 'wishlist'), where('userId', '==', currentUser.uid));
+            const querySnapshot = await getDocs(q);
+            const wishlistIds = querySnapshot.docs.map((doc) => doc.data().productId);
+            setWishlist(wishlistIds);
+         } catch (error) {
+            console.error('Error fetching wishlist:', error);
          }
       };
 
       fetchProducts();
-   }, []);
-
+      fetchWishlist();
+   }, [currentUser]);
 
    const handleCardClick = (product) => {
       setPostDetails(product);
       navigate('/view-product');
    };
 
+   const handleWishlistToggle = (productId, isAdded) => {
+      setWishlist((prev) =>
+         isAdded ? [...prev, productId] : prev.filter((id) => id !== productId)
+      );
+   };
 
    return (
       <div className="postParentDiv">
-         
          <div className="recommendations">
             <div className="heading">
                <span>Fresh Recommendations</span>
             </div>
-
             <div className="cards products">
                {products.map((product) => (
-                  <div
-                     className="product-card"
+                  <PostCard
+                     key={product.id}
+                     product={product}
                      onClick={() => handleCardClick(product)}
-                     key={product.id}>
-                     <div className="image">
-                        <div className="favorite">
-                           <Heart />
-                        </div>
-                        <img src={product.imageUrl} alt={product.productName} />
-                     </div>
-                     <div className="content">
-                        <p className="price">&#x20B9; {product.price}</p>
-                        <p className="product-name"> {product.productName} </p>
-                        <span className="category"> {product.category} </span>
-                     </div>
-                     <div className="date">
-                        <span> {product.createdAt} </span>
-                     </div>
-                  </div>
+                     isWishlisted={wishlist.includes(product.id)}
+                     onWishlistToggle={handleWishlistToggle}
+                  />
                ))}
             </div>
          </div>

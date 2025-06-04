@@ -1,0 +1,416 @@
+.modal-overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background-color: rgba(0, 0, 0, 0.5);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 1000;
+   overflow-y: auto;
+   padding: 20px;
+   box-sizing: border-box;
+}
+
+.modal-container {
+   max-width: 1440px;
+   margin-top: 280px;
+   padding: 0 15px;
+   width: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   min-height: 0;
+   background-color: transparent !important;
+}
+
+.createParentDiv {
+   width: 100%;
+   max-width: 450px;
+   padding: 30px;
+   background-color: rgb(221, 220, 220);
+   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+   border-radius: 10px;
+   text-align: center;
+   margin: 20px 0;
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   position: relative;
+}
+
+.close-button {
+   position: absolute;
+   top: 1px !important;
+   right: 1px !important;
+   background: none;
+   border: none;
+   font-size: 30px !important;
+   color: #333;
+   cursor: pointer;
+   padding: 5px 10px;
+   transition: color 0.3s ease;
+}
+
+.close-button:hover {
+   color: #002f34;
+}
+
+.createParentDiv .logo {
+   border: none;
+   max-width: 100px;
+   width: 100%;
+   height: auto;
+   margin-bottom: 5px;
+}
+
+.createParentDiv label {
+   font-size: 16px;
+   font-weight: 600;
+   color: #333;
+   display: block;
+   text-align: left;
+   margin: 10px 0 5px;
+}
+
+.createParentDiv .input {
+   width: 100%;
+   padding: 10px;
+   border: 1px solid #ddd;
+   border-radius: 4px;
+   outline: none;
+   transition: border-color 0.3s;
+   font-size: 16px;
+   box-sizing: border-box;
+}
+
+.createParentDiv .input:focus {
+   border-color: #002f34;
+   box-shadow: 0 0 3px #002f34;
+}
+
+.imageRow {
+   display: flex;
+   align-items: center;
+   gap: 15px;
+   margin: 20px 0;
+   flex-wrap: wrap;
+}
+
+.createParentDiv .imagePreview {
+   flex: 0 0 auto;
+}
+
+.createParentDiv .imagePreview img {
+   border-radius: 4px;
+   border: 1px solid #ddd;
+   max-width: 150px;
+   max-height: 150px;
+   height: auto;
+   display: block;
+}
+
+.imageUploadContainer {
+   flex: 0 0 auto;
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+}
+
+.imageUploadBtn {
+   width: 150px;
+   padding: 8px 12px;
+   background-color: #002f34;
+   color: white;
+   font-weight: 600;
+   border: none;
+   border-radius: 4px;
+   font-size: 14px;
+   cursor: pointer;
+   transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.imageUploadBtn:hover {
+   background-color: #0550a5;
+   transform: translateY(-2px);
+}
+
+.imageUploadBtn:active {
+   transform: translateY(0);
+}
+
+.input-error {
+   color: red;
+   font-size: 0.9rem;
+   margin: 5px 0 0 0;
+   text-align: left;
+}
+
+.uploadBtn {
+   position: relative;
+   width: 100%;
+   height: 48px;
+   background-color: #002f34;
+   color: white;
+   font-weight: bold;
+   border: none;
+   border-radius: 4px;
+   margin-top: 25px;
+   cursor: pointer;
+   font-size: 16px;
+   overflow: hidden;
+   transition: background-color 0.3s, color 0.3s, border 0.3s;
+}
+
+.uploadBtn:hover {
+   background-color: #0550a5;
+   color: white;
+}
+
+.upload-progress-fill {
+   position: absolute;
+   left: 0;
+   top: 0;
+   height: 100%;
+   background-color: #00a531;
+   transition: width 0.3s ease;
+   z-index: 1;
+}
+
+.upload-progress-text {
+   position: relative;
+   z-index: 2;
+   color: white;
+   font-weight: bold;
+}
+
+.location-field {
+   display: flex;
+   gap: 10px;
+   align-items: center;
+}
+
+.choose-location-btn {
+   padding: 4px 10px;
+   background: #0066ff;
+   color: #fff;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+   font-size: 14px;
+   transition: background 0.2s;
+}
+
+.choose-location-btn:hover {
+   background: #0040a0;
+}
+
+.map-modal {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.5);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 1000;
+}
+
+.map-modal-content {
+   background: #fff;
+   padding: 20px;
+   border-radius: 8px;
+   width: 90%;
+   max-width: 600px;
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.map-modal-close {
+   position: absolute;
+   top: 10px;
+   right: 15px;
+   background: none;
+   border: none;
+   font-size: 24px;
+   cursor: pointer;
+   color: #333;
+}
+
+.map-modal-close:hover {
+   color: #e74c3c;
+}
+
+.map-container {
+   width: 100%;
+   height: 250px;
+   border-radius: 4px;
+   border: 1px solid #ddd;
+}
+
+.location-info {
+   background: #e1e1e1;
+   padding: 10px;
+   border-radius: 4px;
+   border: 1px solid #ddd;
+}
+
+.location-info p {
+   margin: 5px 0;
+   font-size: 14px;
+}
+
+.map-modal-confirm {
+   padding: 10px;
+   background: #0066ff;
+   color: #fff;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+   font-size: 16px;
+   transition: background 0.2s;
+   align-self: flex-end;
+}
+
+.map-modal-confirm:hover {
+   background: #0040a0;
+}
+
+@media only screen and (max-width: 768px) {
+   .modal-overlay {
+      align-items: flex-start;
+      padding-top: 60px;
+   }
+
+   .createParentDiv {
+      padding: 25px;
+      margin: 20px 0;
+      max-width: 90%;
+   }
+
+   .createParentDiv .logo {
+      max-width: 120px;
+      margin-bottom: 8px;
+   }
+
+   .createParentDiv label {
+      font-size: 14px;
+   }
+
+   .createParentDiv .input {
+      padding: 8px;
+      font-size: 14px;
+   }
+
+   .imageRow {
+      margin: 15px 0;
+      gap: 10px;
+   }
+
+   .createParentDiv .imagePreview img {
+      max-width: 120px;
+      max-height: 120px;
+   }
+
+   .imageUploadBtn {
+      width: 120px;
+      padding: 6px 10px;
+      font-size: 13px;
+   }
+
+   .uploadBtn {
+      height: 44px;
+      font-size: 14px;
+      margin-top: 20px;
+   }
+
+   .input-error {
+      font-size: 0.85rem;
+   }
+
+   .choose-location-btn {
+      padding: 3px 8px;
+      font-size: 13px;
+   }
+
+   .map-modal-content {
+      width: 95%;
+      padding: 15px;
+   }
+
+   .map-container {
+      height: 200px;
+   }
+}
+
+@media only screen and (max-width: 480px) {
+   .modal-overlay {
+      padding: 15px;
+      padding-top: 50px;
+   }
+
+   .createParentDiv {
+      padding: 20px;
+      margin: 20px 0;
+      max-width: 95%;
+   }
+
+   .createParentDiv .logo {
+      max-width: 100px;
+      margin-bottom: 6px;
+   }
+
+   .createParentDiv label {
+      font-size: 13px;
+      margin: 8px 0 4px;
+   }
+
+   .createParentDiv .input {
+      padding: 7px;
+      font-size: 13px;
+   }
+
+   .imageRow {
+      margin: 10px 0;
+      gap: 8px;
+   }
+
+   .createParentDiv .imagePreview img {
+      max-width: 100px;
+      max-height: 100px;
+   }
+
+   .imageUploadBtn {
+      width: 100px;
+      padding: 5px 8px;
+      font-size: 12px;
+   }
+
+   .uploadBtn {
+      height: 40px;
+      font-size: 13px;
+      margin-top: 15px;
+   }
+
+   .input-error {
+      font-size: 0.8rem;
+   }
+
+   .choose-location-btn {
+      padding: 2px 6px;
+      font-size: 12px;
+   }
+
+   .map-modal-content {
+      width: 98%;
+      padding: 10px;
+   }
+
+   .map-container {
+      height: 180px;
+   }
+}

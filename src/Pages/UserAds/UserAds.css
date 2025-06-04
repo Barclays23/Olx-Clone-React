@@ -1,0 +1,75 @@
+.myads-container {
+   max-width: 1200px;
+   margin: 80px auto 20px;
+   padding: 24px;
+   background-color: white;
+   border-radius: 8px;
+   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.myads-container h1 {
+   font-size: 22px;
+   font-weight: 600;
+   color: #002f34;
+   margin-bottom: 16px;
+}
+
+.myads-content p {
+   font-size: 16px;
+   color: #333;
+   text-align: center;
+}
+
+.cards {
+   display: grid;
+   grid-template-columns: repeat(4, 1fr);
+   gap: 16px;
+}
+
+@media only screen and (max-width: 1200px) {
+   .cards {
+      grid-template-columns: repeat(3, 1fr);
+   }
+}
+
+@media only screen and (max-width: 800px) {
+   .cards {
+      grid-template-columns: repeat(2, 1fr);
+   }
+}
+
+@media only screen and (max-width: 500px) {
+   .cards {
+      grid-template-columns: 1fr;
+   }
+}
+
+@media only screen and (max-width: 768px) {
+   .myads-container {
+      margin: 70px 10px 10px;
+      padding: 15px;
+   }
+
+   .myads-container h1 {
+      font-size: 20px;
+   }
+
+   .myads-content p {
+      font-size: 14px;
+   }
+}
+
+@media only screen and (max-width: 480px) {
+   .myads-container {
+      margin: 70px 8px 8px;
+      padding: 12px;
+   }
+
+   .myads-container h1 {
+      font-size: 18px;
+   }
+
+   .myads-content p {
+      font-size: 13px;
+   }
+}

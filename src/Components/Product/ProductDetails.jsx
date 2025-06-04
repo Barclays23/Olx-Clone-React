@@ -65,7 +65,8 @@ function ProductDetails() {
                <span className="title"> {postDetails.productName} </span>
                <p className="category"> {postDetails.category} </p>
                <span className="date"> {postDetails.createdAt} </span>
-               <p className="location"> Location info not provided </p>
+               {/* <p className="location"> Location info not provided </p> */}
+               <p className="location">{postDetails.location?.address || 'Location not available'}</p>
             </div>
 
             <div className="sellerCard">

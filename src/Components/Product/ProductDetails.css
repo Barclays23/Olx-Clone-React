@@ -1,36 +1,43 @@
 .productContainer {
   margin-top: 70px;
-  position: relative;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   padding: 0.5em;
-  background-color: #ea4d4d;
+  background-color: #e4e3e3;
   font-family: sans-serif;
+  width: 100%;
+  overflow-x: hidden; /* Prevent horizontal overflow */
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .imageSection {
-  flex: 1;
+  width: 100%;
   padding: 0.5em;
   display: flex;
   justify-content: center;
+  align-items: center;
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .imageSection img {
   width: 100%;
+  max-width: 100%; /* Ensure image never exceeds container */
   height: auto;
-  max-height: 430px;
+  max-height: 500px;
   border-radius: 10px;
-  /* object-fit: contain; */
-  object-fit: cover;
+  object-fit: contain;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .detailsSection {
+  width: 100%;
+  max-width: 100%; /* Ensure it doesn't exceed viewport */
+  margin: 0 auto;
   padding: 0.5em;
-  width: 350px;
   display: flex;
   flex-direction: column;
   gap: 1em;
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .productCard, .sellerCard {
@@ -38,6 +45,8 @@
   padding: 1em;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  width: 100%;
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .productCard .price {
@@ -105,4 +114,38 @@
 
 .chatButton:hover {
   background-color: #014045;
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .productContainer {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 100vw; /* Ensure container doesn't exceed viewport */
+    padding: 1em;
+  }
+
+  .imageSection {
+    flex: 1;
+    max-width: calc(50% - 1em); /* Account for gap */
+  }
+
+  .detailsSection {
+    width: 350px;
+    margin: 0;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .productContainer {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .imageSection img {
+    max-height: 430px;
+  }
 }

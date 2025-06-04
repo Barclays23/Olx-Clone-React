@@ -1,0 +1,55 @@
+.postParentDiv {
+   padding: 20px;
+   background-color: #f9f9f9;
+}
+
+.recommendations {
+   background: #fff;
+   border-radius: 8px;
+   padding: 24px;
+   margin-bottom: 32px;
+   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.heading {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 16px;
+}
+
+.heading :first-child {
+   font-size: 22px;
+   font-weight: 600;
+   color: #333;
+}
+
+.cards {
+   display: grid;
+   grid-template-columns: repeat(4, 1fr);
+   gap: 16px;
+}
+
+.recommendations .heading span {
+   font-size: 22px;
+   font-weight: 600;
+   color: #333;
+}
+
+@media (max-width: 1200px) {
+   .cards {
+      grid-template-columns: repeat(3, 1fr);
+   }
+}
+
+@media (max-width: 800px) {
+   .cards {
+      grid-template-columns: repeat(2, 1fr);
+   }
+}
+
+@media (max-width: 500px) {
+   .cards {
+      grid-template-columns: 1fr;
+   }
+}

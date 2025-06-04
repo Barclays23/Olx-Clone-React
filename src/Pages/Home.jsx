@@ -6,7 +6,7 @@ import Posts from '../Components/Posts/Posts';
 import Footer from '../Components/Footer/Footer';
 import Navbar from '../Components/Navbar/Navbar';
 
-// done some changes
+
 
 function Home() {
   return (

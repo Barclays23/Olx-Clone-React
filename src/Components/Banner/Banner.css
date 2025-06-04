@@ -1,43 +1,207 @@
 .bannerParentDiv {
-  margin-top: 15px;
-  padding-top: 4em;
+  margin-top: 4rem;
+  padding-top: 2rem;
+  width: 100vw; /* Use viewport width */
+  max-width: 100%; /* Ensure it doesn't exceed viewport */
+  box-sizing: border-box;
+  background-color: #f8f9fa;
+  overflow-x: hidden; /* Prevent any horizontal overflow */
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
 
 .bannerChildDiv {
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
 }
 
 .menuBar {
   display: flex;
-  padding: 10px 16px;
-  flex-wrap: wrap; /* makes it wrap on small screens */
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.categoryMenu {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  background-color: #0155d3;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.categoryMenu:hover {
+  background-color: #013f9b;
 }
 
 .categoryMenu span {
-  margin-right: 16px;
-  font-weight: bold;
-  cursor: pointer;
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
+  font-weight: 600;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.otherQuickOptions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.25rem 0;
+  flex: 1;
+  min-width: 0; /* Crucial for flex overflow */
+  width: 100%; /* Take full width */
+  box-sizing: border-box;
+}
+
+.otherQuickOptions::-webkit-scrollbar {
+  display: none; /* Hide scrollbar in WebKit browsers */
+}
+
+.otherQuickOptions {
+  scrollbar-width: none;
 }
 
 .otherQuickOptions span {
-  padding: 10px;
+  padding: 0.5rem 1rem;
+  font-size: clamp(0.875rem, 1.8vw, 0.9375rem);
+  font-weight: 500;
+  color: #2c3e50; /* Darker, professional color */
+  border: 1px solid #ced4da; /* Subtle border for definition */
+  border-radius: 20px; /* Pill-shaped buttons */
+  background-color: #ffffff; /* White background for contrast */
   cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.otherQuickOptions span:hover {
+  background-color: #0155d3; /* Match categoryMenu color on hover */
+  color: #ffffff; /* White text on hover */
+  border-color: #0155d3; /* Match border to background */
+  transform: translateY(-1px); /* Subtle lift effect */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow on hover */
 }
 
 .banner {
   position: relative;
   width: 100%;
+  max-width: 100%;
   overflow: hidden;
+  margin-top: 1rem;
+  box-sizing: border-box;
 }
 
 .banner img {
   width: 100%;
-  height: auto; /* keeps aspect ratio */
-  display: block; /* removes inline spacing */
+  height: auto;
+  display: block;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-@media only screen and (max-width: 700px) {
+
+
+
+/* Mobile devices (up to 600px) */
+@media only screen and (max-width: 600px) {
+  .bannerParentDiv {
+    padding-top: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .menuBar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .categoryMenu {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.5rem;
+  }
+
+  .categoryMenu span {
+    font-size: clamp(0.875rem, 4vw, 1rem);
+  }
+
   .otherQuickOptions {
-    display: none;
+    display: flex; /* Show on mobile with limited items */
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+  }
+
+  /* Limit visible categories on mobile */
+  .otherQuickOptions span:nth-child(n+6) {
+    display: none; /* Hide categories after the first 5 */
+  }
+
+  .banner img {
+    max-height: 200px;
+  }
+}
+
+/* Tablets (601px to 900px) */
+@media only screen and (min-width: 601px) and (max-width: 900px) {
+  .bannerParentDiv {
+    padding-top: 1.75rem;
+  }
+
+  .menuBar {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5rem;
+  }
+
+  .categoryMenu span {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+  }
+
+  .otherQuickOptions span {
+    font-size: clamp(0.75rem, 1.8vw, 0.875rem);
+    padding: 0.4rem 0.8rem;
+  }
+
+  .banner img {
+    max-height: 300px;
+  }
+}
+
+/* Desktops (901px and above) */
+@media only screen and (min-width: 901px) {
+  .menuBar {
+    padding: 0.5rem;
+  }
+
+  .otherQuickOptions {
+    gap: 0.75rem;
+  }
+
+  .otherQuickOptions span {
+    padding: 0.5rem 1rem;
   }
 }

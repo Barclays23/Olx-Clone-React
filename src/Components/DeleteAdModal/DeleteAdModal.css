@@ -1,0 +1,119 @@
+/* DeleteAdModal.css */
+.modal-overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background: rgba(0, 0, 0, 0.5);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 1000;
+}
+
+.modal-container {
+   margin-top: 1px;
+   background: white !important;
+   border-radius: 8px;
+   max-width: 400px;
+   width: 100%;
+   padding: 20px;
+   position: relative;
+}
+
+.deleteModal {
+   display: flex;
+   flex-direction: column;
+   gap: 15px;
+}
+
+.close-button {
+   position: absolute;
+   top: 10px;
+   right: 10px;
+   background: none;
+   border: none;
+   font-size: 20px;
+   cursor: pointer;
+}
+
+.deleteModal h2 {
+   margin: 0;
+   font-size: 24px;
+   text-align: center;
+}
+
+.deleteModal p {
+   margin: 10px 0;
+   text-align: center;
+}
+
+.deleteModal form {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.deleteModal label {
+   font-weight: bold;
+}
+
+.deleteModal .input {
+   padding: 10px;
+   width: 95%;
+   border: 1px solid #9e9e9e !important;
+   border-radius: 4px;
+   font-size: 16px;
+}
+
+.deleteModal .input:focus {
+   border: 1.5px solid #353535 !important;
+}
+
+.input-error {
+   color: red;
+   font-size: 12px;
+   margin: 5px 0 0;
+}
+
+.buttonRow {
+   display: flex;
+   gap: 10px;
+   justify-content: center;
+}
+
+.deleteConfirmBtn,
+.cancelBtn {
+   padding: 10px 20px;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+   font-size: 16px;
+}
+
+.deleteConfirmBtn {
+   background: #d32f2f;
+   color: white;
+}
+
+.cancelBtn {
+   background: #ccc;
+   color: black;
+}
+
+.deleteConfirmBtn:disabled,
+.cancelBtn:disabled {
+   background: #e0e0e0;
+   cursor: not-allowed;
+}
+
+.deleteConfirmBtn:hover {
+   background: #df0202;
+   color: white;
+}
+
+.cancelBtn:hover {
+   background: #b5b4b4;
+   color: black;
+}

@@ -27,7 +27,7 @@ function Footer() {
             </div>
             <div>
                <div className="heading">
-                  <p>POPULAR LOCATIONS</p>
+                  <p>TRENDING LOCATIONS</p>
                </div>
                <div className="list">
                   <ul>

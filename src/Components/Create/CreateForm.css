@@ -1,208 +1,222 @@
 .container {
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0 15px;
-    min-height: calc(100vh - 120px); /* Adjust for navbar and footer */
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+   max-width: 1200px;
+   margin: 0 auto;
+   margin-top: 80px;
+   padding: 20px;
 }
 
 .createParentDiv {
-    width: 100%;
-    max-width: 450px;
-    padding: 30px;
-    background-color: white;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    text-align: center;
-    margin: 100px auto 20px; /* Increased top margin */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   max-width: 600px;
+   margin: 0 auto;
+   padding: 20px;
+   background: #e3e3e3 !important;
+   border-radius: 8px;
+   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.createParentDiv .logo {
-    border: none;
-    max-width: 150px;
-    width: 100%;
-    height: auto;
-    margin-bottom: 20px;
+.logo {
+   display: block;
+   margin: 0 auto 20px;
 }
 
-.createParentDiv label {
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-    display: block;
-    text-align: left;
-    margin: 10px 0 5px;
+form {
+   display: flex;
+   flex-direction: column;
+   gap: 2px;
 }
 
-.createParentDiv .input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    outline: none;
-    transition: border-color 0.3s;
-    font-size: 16px;
-    box-sizing: border-box;
+label {
+   font-size: 16px;
+   font-weight: 500;
+   color: #333;
 }
 
-.createParentDiv .input:focus {
-    border-color: #002f34;
-    box-shadow: 0 0 3px #002f34;
+.input {
+   width: 100%;
+   padding: 10px;
+   font-size: 16px;
+   border: 1px solid #b5b5b5 !important;
+   border-radius: 4px;
+   outline: none;
+   transition: border-color 0.2s;
 }
 
-.createParentDiv .imagePreview {
-    margin: 20px 0;
-}
-
-.createParentDiv .imagePreview img {
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-}
-
-.createParentDiv input[type="file"] {
-    width: 100%;
-    padding: 10px 0;
-    font-size: 16px;
+.input:focus {
+   border-color: #3498db; /* Fixed invalid border value */
 }
 
 .input-error {
-    color: red;
-    font-size: 0.9rem;
-    margin: 5px 0 0 0;
-    text-align: left;
+   color: red !important;
+   font-size: 14px !important;
+   margin-top: 2px !important;
+   margin-bottom: 2px !important;
+}
+
+.imagePreview {
+   text-align: center;
+   margin: 10px 0;
 }
 
 .uploadBtn {
-    position: relative;
-    width: 100%;
-    height: 48px;
-    background-color: #002f34;
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    margin-top: 25px;
-    cursor: pointer;
-    font-size: 16px;
-    overflow: hidden;
-    transition: background-color 0.3s, color 0.3s, border 0.3s;
+   position: relative;
+   padding: 12px;
+   background: #3498db;
+   color: #fff;
+   border: none;
+   border-radius: 4px; /* Fixed 'none' to a valid value */
+   font-size: 16px;
+   cursor: pointer;
+   transition: background 0.2s; /* Fixed 'none' to allow background transition */
+   overflow: hidden;
 }
 
-.uploadBtn:hover {
-    background-color: #0550a5;
-    color: white;
+.uploadBtn:disabled {
+   background: #95a5a6;
+   cursor: not-allowed;
 }
 
 .upload-progress-fill {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    background-color: #00a531;
-    transition: width 0.3s ease;
-    z-index: 1;
+   position: absolute;
+   top: 0;
+   left: 0;
+   height: 100%; /* Fixed invalid height value */
+   background: #2980b9; /* Fixed invalid background value */
+   transition: width 0.2s; /* Added transition for smooth progress bar */
 }
 
 .upload-progress-text {
-    position: relative;
-    z-index: 2;
-    color: white;
-    font-weight: bold;
+   position: relative;
+   z-index: 1;
 }
 
-@media only screen and (max-width: 768px) {
-    .createParentDiv {
-        padding: 20px;
-        margin: 105px auto 20px; /* Increased top margin for tablet */
-        max-width: 500px;
-    }
-
-    .createParentDiv .logo {
-        max-width: 120px;
-        margin-bottom: 15px;
-    }
-
-    .createParentDiv label {
-        font-size: 14px;
-    }
-
-    .createParentDiv .input {
-        padding: 8px;
-        font-size: 14px;
-    }
-
-    .createParentDiv input[type="file"] {
-        font-size: 14px;
-    }
-
-    .createParentDiv .imagePreview {
-        margin: 15px 0;
-    }
-
-    .uploadBtn {
-        height: 44px;
-        font-size: 14px;
-        margin-top: 20px;
-    }
-
-    .input-error {
-        font-size: 0.85rem;
-    }
+.uploadBtn:hover:not(:disabled) {
+   background: #2980b9; /* This should now work due to proper transition */
 }
 
-@media only screen and (max-width: 480px) {
-    .container {
-        padding: 0 10px;
-    }
+/* Location Field Styles */
+.location-field {
+   display: flex;
+   gap: 10px; /* Fixed 'none' to a valid gap value */
+   align-items: center;
+}
 
-    .createParentDiv {
-        padding: 15px;
-        margin: 95px auto 15px; /* Increased top margin for mobile */
-        max-width: 100%;
-    }
+.choose-location-btn {
+   padding: 4px 10px;
+   background: #0066ff;
+   color: #fff; /* Added text color */
+   border: none; /* Kept as none since no border is desired */
+   border-radius: 4px; /* Added valid border-radius */
+   cursor: pointer; /* Added cursor for interactivity */
+   font-size: 14px; /* Added font-size */
+   transition: background 0.2s; /* Added transition for hover effect */
+}
 
-    .createParentDiv .logo {
-        max-width: 100px;
-        margin-bottom: 10px;
-    }
+.choose-location-btn:hover {
+   background: #0040a0;
+}
 
-    .createParentDiv label {
-        font-size: 13px;
-        margin: 8px 0 4px;
-    }
+/* Map Modal Styles */
+.map-modal {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.5);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 1000;
+}
 
-    .createParentDiv .input {
-        padding: 7px;
-        font-size: 13px;
-    }
+.map-modal-content {
+   background: #fff;
+   padding: 20px;
+   border-radius: 8px;
+   width: 90%;
+   max-width: 600px;
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
 
-    .createParentDiv input[type="file"] {
-        font-size: 13px;
-        padding: 8px 0;
-    }
+.map-modal-close {
+   position: absolute;
+   top: 10px;
+   right: 15px;
+   background: none;
+   border: none;
+   font-size: 24px;
+   cursor: pointer;
+   color: #333;
+}
 
-    .createParentDiv .imagePreview {
-        margin: 10px 0;
-    }
+.map-modal-close:hover {
+   color: #e74c3c;
+}
 
-    .createParentDiv .imagePreview img {
-        max-width: 80%;
-    }
+.map-container {
+   width: 100%;
+   height: 250px;
+   border-radius: 4px;
+   border: 1px solid #ddd;
+}
 
-    .uploadBtn {
-        height: 40px;
-        font-size: 13px;
-        margin-top: 15px;
-    }
+.location-info {
+   background: #e1e1e1;
+   padding: 10px;
+   border-radius: 4px;
+   border: 1px solid #ddd;
+}
 
-    .input-error {
-        font-size: 0.8rem;
-    }
+.location-info p {
+   margin: 5px 0;
+   font-size: 14px;
+}
+
+.map-modal-confirm {
+   padding: 10px;
+   background: #0066ff;
+   color: #fff;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+   font-size: 16px;
+   transition: background 0.2s;
+   align-self: flex-end;
+}
+
+.map-modal-confirm:hover {
+   background: #0040a0;
+}
+
+/* Image Upload Styles */
+.image-upload-container {
+   margin: 2px 0;
+   display: flex;
+   align-items: center;
+   gap: 10px;
+}
+
+.image-upload-btn {
+   padding: 10px 15px;
+   background: #0066ff;
+   color: #fff !important;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+   font-size: 14px;
+   transition: background 0.2s;
+   text-align: center;
+}
+
+.image-upload-btn:hover {
+   background: #0040a0;
+}
+
+.image-upload-btn.disabled {
+   background: #95a5a6;
+   cursor: not-allowed;
+   pointer-events: none;
 }
