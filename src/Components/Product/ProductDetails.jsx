@@ -49,6 +49,7 @@ function ProductDetails() {
    if (!postDetails || !ownerDetails) {
       return <div className="loading-spinner">Loading...</div>;
    }
+   
   
 
 
@@ -65,16 +66,22 @@ function ProductDetails() {
                <span className="title"> {postDetails.productName} </span>
                <p className="category"> {postDetails.category} </p>
                <span className="date"> {postDetails.createdAt} </span>
-               {/* <p className="location"> Location info not provided </p> */}
                <p className="location">{postDetails.location?.address || 'Location not available'}</p>
             </div>
 
             <div className="sellerCard">
                <p className="sellerTitle">Posted by</p>
                <div className="sellerInfo">
-                  <div className="avatar"></div>
+                  <div className="avatar">
+                     {ownerDetails.photoURL ? (
+                        <img src={ownerDetails.photoURL} alt={ownerDetails.username} className="avatar-image" />
+                     ) : (
+                        <div className="avatar-place-holder">No Image</div>
+                     )}
+                  </div>
+
                   <div>
-                     <p className="sellerName"> {ownerDetails.username} </p>
+                     <p className="sellerName"> {ownerDetails.displayName} </p>
                      <p className="sellerPhone"> {ownerDetails.phone} </p>
                   </div>
                </div>

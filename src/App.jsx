@@ -16,7 +16,9 @@ import Profile from './Pages/Profile/Profile';
 import Wishlist from './Pages/Wishlist/Wishlist';
 import Navbar from './Components/Navbar/Navbar';
 import UserAds from './Pages/UserAds/UserAds';
-// import Review from './Pages/Review';
+import PageNotFound from './Pages/PageNotFound/PageNotFound';
+// import Review from './Pages/Review/Review';
+
 
 
 
@@ -38,6 +40,8 @@ function App() {
                   <Route path="/wishlist" element={<Wishlist />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/my-ads" element={<UserAds />} />
+                  {/* <Route path="/review" element={<Review />} /> */}
+                  <Route path="*" element={<PageNotFound />} />
                </Routes>
             </Router>
          </PostContextProvider>
@@ -46,3 +50,4 @@ function App() {
 }
 
 export default App
+

@@ -1,0 +1,92 @@
+/* PageNotFound.css */
+.notFoundContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh; /* Use min-height to ensure it takes at least most of the viewport */
+  text-align: center;
+  padding: 20px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* A common, clean sans-serif font stack */
+  color: #333; /* Dark grey for general text */
+  box-sizing: border-box; /* Ensures padding doesn't add to the width/height */
+}
+
+.notFoundImage {
+  max-width: 200px; /* Adjust as needed */
+  width: 60%;      /* Responsive width based on container */
+  margin-bottom: 10px;
+  opacity: 0.8; /* Slightly transparent to blend in */
+}
+
+.errorCode {
+  font-size: clamp(4rem, 15vw, 8rem); /* Responsive font size: min, preferred, max */
+  font-weight: bold;
+  color: #ff6700; /* OLX-like orange, or your project's primary accent color */
+  margin: 0;
+  line-height: 1; /* Adjust line height for large text */
+}
+
+.title {
+  font-size: clamp(1.5rem, 5vw, 2.5rem); /* Responsive font size */
+  margin-top: 5px;
+  margin-bottom: 20px;
+  color: #484848; /* Slightly lighter than primary text */
+  font-weight: 500;
+}
+
+.message {
+  font-size: clamp(0.8rem, 4vw, 1.1rem); /* Responsive font size */
+  margin-bottom: 30px;
+  color: #666; /* Medium grey for less prominent text */
+  max-width: 500px; /* Keeps the paragraph readable on wider screens */
+  line-height: 1.6;
+}
+
+.actionsContainer {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically by default (mobile-first) */
+  align-items: center;
+  gap: 15px; /* Space between buttons */
+  width: 100%; /* Allow container to take width for centering buttons */
+  max-width: 400px; /* Max width for the actions container */
+}
+
+.actionButton {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
+  font-weight: bold;
+  color: #fff; /* White text */
+  background-color: #002f34; /* OLX-like dark teal/blue, or your project's primary button color */
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  min-width: 180px; /* Minimum width for buttons */
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.actionButton:hover {
+  background-color: #004850; /* Slightly lighter or darker shade on hover */
+  transform: translateY(-2px); /* Subtle lift effect */
+}
+
+.actionButton:focus {
+  outline: 2px solid #ff6700; /* Accessibility: outline for focused buttons */
+  outline-offset: 2px;
+}
+
+/* Media query for larger screens (e.g., tablets and desktops) */
+@media (min-width: 600px) {
+  .actionsContainer {
+    flex-direction: row; /* Align buttons in a row on larger screens */
+    justify-content: center; /* Center buttons in the row */
+  }
+
+  .actionButton {
+    padding: 14px 30px; /* Slightly larger buttons on larger screens */
+  }
+}
